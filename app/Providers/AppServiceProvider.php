@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\View\Components\card\Post;
 use App\View\Components\layouts\Authenticate;
 use App\View\Components\layouts\Dashboard;
+use App\View\Components\layouts\Header;
 use App\View\Components\Sidebar;
 use Blade;
 use Illuminate\Database\Query\Builder;
@@ -50,7 +52,8 @@ class AppServiceProvider extends ServiceProvider
             return $this;
         });
         Blade::component('layouts-authenticate', Authenticate::class);
+        Blade::component('card-post', Post::class);
+        Blade::component('layouts-header', Header::class);
         Blade::component('layouts-dashboard', Dashboard::class);
-        Blade::component('sidebar', Sidebar::class);
     }
 }

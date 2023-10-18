@@ -16,7 +16,7 @@
                             d="M10.28 1.28L3.989 7.575 1.695 5.28A1 1 0 00.28 6.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 1.28z">
                         </path>
                     </svg>
-                    <span class="text-sm">
+                    <span class="text-sm font-bold">
                         {{ $errors->first('custom') }}
                     </span>
                 </div>
@@ -27,7 +27,7 @@
                     class="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500"
                     type="text" placeholder="Titor@example.com">
                 @if ($errors->has('email'))
-                    <span class="text-sm text-red-600">{{ $errors->first('email') }}</span>
+                    <span class="text-sm text-red-600 font-bold">{{ $errors->first('email') }}</span>
                 @endif
             </div>
             <div class="mt-8">
@@ -36,7 +36,7 @@
                     class="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500"
                     type="text" placeholder="Kazuma">
                 @if ($errors->has('user_name'))
-                    <span class="text-sm text-red-600">{{ $errors->first('user_name') }}</span>
+                    <span class="text-sm text-red-600 font-bold">{{ $errors->first('user_name') }}</span>
                 @endif
             </div>
             <div class="mt-8">
@@ -45,7 +45,7 @@
                     class="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500"
                     type="text" placeholder="Yamada">
                 @if ($errors->has('name'))
-                    <span class="text-sm text-red-600">{{ $errors->first('name') }}</span>
+                    <span class="text-sm text-red-600 font-bold">{{ $errors->first('name') }}</span>
                 @endif
             </div>
             <div class="mt-8">
@@ -54,7 +54,7 @@
                     class="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500"
                     type="password" placeholder="******" autocomplete="on">
                 @if ($errors->has('password'))
-                    <span class="text-sm text-red-600">{{ $errors->first('password') }}</span>
+                    <span class="text-sm text-red-600 font-bold">{{ $errors->first('password') }}</span>
                 @endif
             </div>
         </div>

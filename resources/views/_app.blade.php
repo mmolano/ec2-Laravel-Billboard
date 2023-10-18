@@ -12,12 +12,10 @@
 </head>
 
 <body>
+    <x-layouts-header />
     <div class="flex h-screen overflow-hidden">
-        <x-sidebar />
         <div class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden" x-ref="contentarea">
-            <div class="grid grid-cols-12 gap-6">
-                <livewire:user-search />
-            </div>
+            <livewire:card-search />
         </div>
         <livewire:scripts>
 </body>
