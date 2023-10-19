@@ -22,7 +22,7 @@ class CardSearch extends Component
     public function render(): View
     {
         return view('livewire.card-search', [
-            'posts' => Post::whereLike('title', $this->search ?? '')->paginate(10),
+            'posts' => Post::whereLike('title', $this->search ?? '')->orderBy('created_at', 'desc')->paginate(10),
         ]);
     }
 }

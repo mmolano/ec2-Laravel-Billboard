@@ -41,6 +41,6 @@ class LoginController extends Controller
             return redirect()->route('dashboard');
         }
 
-        return Redirect::route('login')->withErrors(['login' => 'Invalid login credentials']);
+        return Redirect::route('login')->withErrors(['login' => 'これらの資格情報は記録と一致しません。']);
     }
 }

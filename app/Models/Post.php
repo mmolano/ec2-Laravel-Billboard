@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -27,8 +28,8 @@ class Post extends Model
      *
      * @return HasMany
      */
-    public function comment(): HasMany
+    public function comments(): HasMany
     {
-        return $this->hasMany(Comment::class, 'comment_id', 'comment_id');
+        return $this->hasMany(Comment::class, 'post_id', 'post_id');
     }
 }

@@ -1,21 +1,17 @@
 <x-layouts-authenticate>
     <h1 class="text-3xl text-slate-800 dark:text-slate-100 font-bold mb-6">{{ __('ログイン') }} ✨</h1>
-    @if (session('status'))
-        <div class="mb-4 font-medium text-sm text-green-600">
-            {{ session('status') }}
-        </div>
-    @endif
     <!-- Form -->
     <form method="POST" action="{{ route('login.submit') }}">
         @csrf
         <div class="space-y-4">
-            @if ($errors->has('login'))
+            @if (session('success'))
+                <div class="bg-green-100 text-green-600 px-3 py-2 rounded">
+                    <span class="text-sm font-bold">
+                        {{ session('success') }}
+                    </span>
+                </div>
+            @elseif ($errors->has('login'))
                 <div class="bg-red-100 text-red-600 px-3 py-2 rounded">
-                    <svg class="inline w-3 h-3 shrink-0 fill-current" viewBox="0 0 12 12">
-                        <path
-                            d="M10.28 1.28L3.989 7.575 1.695 5.28A1 1 0 00.28 6.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 1.28z">
-                        </path>
-                    </svg>
                     <span class="text-sm font-bold">
                         {{ $errors->first('login') }}
                     </span>

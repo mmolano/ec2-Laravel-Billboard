@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use App\View\Components\card\Post;
 use App\View\Components\layouts\Authenticate;
-use App\View\Components\layouts\Dashboard;
+use App\View\Components\layouts\Post_id;
 use App\View\Components\layouts\Header;
 use App\View\Components\Sidebar;
+use App\View\Components\modal\ModalEdit;
+use App\View\Components\modal\ModalDelete;
 use Blade;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\ServiceProvider;
@@ -54,6 +56,8 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('layouts-authenticate', Authenticate::class);
         Blade::component('card-post', Post::class);
         Blade::component('layouts-header', Header::class);
-        Blade::component('layouts-dashboard', Dashboard::class);
+        Blade::component('layouts-post', Post_id::class);
+        Blade::component('modal-edit', ModalEdit::class);
+        Blade::component('modal-delete', ModalDelete::class);
     }
 }

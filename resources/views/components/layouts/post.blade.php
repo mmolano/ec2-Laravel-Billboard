@@ -34,7 +34,7 @@
     <x-layouts-header />
     <div class="flex h-screen overflow-hidden">
         <div class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden" x-ref="contentarea">
-            <livewire:card-search />
+            {{ $slot }}
         </div>
         <livewire:scripts>
 </body>

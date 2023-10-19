@@ -4,7 +4,7 @@ namespace App\View\Components\layouts;
 
 use Illuminate\View\Component;
 
-class Dashboard extends Component
+class Post_id extends Component
 {
     /**
      * Create a new component instance.
@@ -23,6 +23,6 @@ class Dashboard extends Component
      */
     public function render()
     {
-        return view('components.layouts.dashboard');
+        return view('components.layouts.post');
     }
 }

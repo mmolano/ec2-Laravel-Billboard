@@ -18,6 +18,6 @@ class LogoutController extends Controller
     {
         Auth::logout();
 
-        return Redirect::route('register')->with('success', 'Your account has been created!');
+        return Redirect::route('login')->with('success', 'ログアウトしました！');
     }
 }

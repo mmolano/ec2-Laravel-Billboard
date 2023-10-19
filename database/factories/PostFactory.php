@@ -22,7 +22,7 @@ class PostFactory extends Factory
         return [
             'title' => rtrim($title, '.'),
             'content' => fake()->text(),
-            'user_id' => User::factory(),
+            'user_id' => User::inRandomOrder()->first()->user_id,
         ];
     }
 }

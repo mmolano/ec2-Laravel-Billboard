@@ -1,10 +1,10 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\UserController;
-use App\Http\Livewire\UserSearch;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\SessionAuthMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -46,4 +46,19 @@ Route::group([
         return view('_app');
     })->name('dashboard');
     Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
+
+    Route::group([
+        'prefix' => 'post'
+    ], function () {
+        Route::post('/', [PostController::class, 'store'])->name('post');
+        Route::get('/{id}', [PostController::class, 'show'])->name('posts.show');
+    });
+
+    Route::group([
+        'prefix' => 'comment'
+    ], function () {
+        Route::post('/', [CommentController::class, 'store'])->name('comment');
+        Route::delete('/{id}/delete', [CommentController::class, 'delete'])->name('comment.delete');
+        Route::put('/{id}/edit', [CommentController::class, 'update'])->name('comment.update');
+    });
 });

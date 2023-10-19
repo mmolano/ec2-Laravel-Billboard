@@ -88,9 +88,9 @@ return [
     'mimes' => ':attributeは:valuesタイプのファイルでなければなりません。',
     'mimetypes' => ':attributeは:valuesタイプのファイルでなければなりません。',
     'min' => [
-        'numeric' => ':attributeは:maxより小さくてはいけません。',
-        'file' => ':attributeは:maxキロバイトより小さくてはいけません。',
-        'string' => ':attributeは:max文字より小さくてはいけません。',
+        'numeric' => ':attributeは:minより小さくてはいけません。',
+        'file' => ':attributeは:minキロバイトより小さくてはいけません。',
+        'string' => ':attributeは:min文字より小さくてはいけません。',
         'array' => ':attributeには少なくとも:min個のアイテムが必要です。',
     ],
     'multiple_of' => ':attributeは:valueの倍数である必要があります。',

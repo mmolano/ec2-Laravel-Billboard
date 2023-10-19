@@ -67,11 +67,11 @@ class RegisterController extends Controller
             'email' => $request->email,
             'name' => $request->name
         ])) {
-            return $this->handleErrorResponse(2, 'User could not be created');
+            return $this->handleErrorResponse(2, '登録できませんでした。');
+        } else if (!Auth::login($user)) {
+            return $this->handleErrorResponse(2, 'ログインできませんでした。');
         }
 
-        Auth::login($user);
-
-        return Redirect::route('dashboard')->with('success', 'Your account has been created!');
+        return Redirect::route('dashboard');
     }
 }
