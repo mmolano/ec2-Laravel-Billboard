@@ -2,8 +2,8 @@
     x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
     x-transition:leave="transition ease-out duration-200" x-transition:leave-start="opacity-100"
     x-transition:leave-end="opacity-0"
-    class="fixed left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-full bg-[#50494952]">
-    <div class="relative w-full max-w-2xl max-h-full m-auto mt-1">
+    class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-full bg-[#50494952]">
+    <div class="relative top-1/4 w-full max-w-2xl max-h-full m-auto mt-1">
         <!-- Modal content -->
         <div @click.outside="openModalDelete = false" class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
@@ -21,16 +21,16 @@
             </div>
             <!-- Modal body -->
             <div class="p-6 text-center">
-                <form class="mb-6" method="POST" action="{{ route('comment.delete', ['id' => $id]) }}">
+                <form class="mb-6" method="POST" action="{{ route($url, ['id' => $id]) }}">
                     @method('DELETE')
                     @csrf
-                    <input type="hidden" name="post_id" value={{ $comment->post_id }} />
+                    <input type="hidden" name="post_id" value={{ $value->post_id }} />
                     <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                     </svg>
-                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">コメントを削除しますか？</h3>
+                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">{{$title}}</h3>
                     <button type="submit"
                         class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
                         します。

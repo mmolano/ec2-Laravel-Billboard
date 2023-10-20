@@ -1,19 +1,22 @@
 <?php
 
-namespace App\View\Components\Layouts;
+namespace App\View\Components\Modal;
 
+use App\Models\Post;
 use Illuminate\View\Component;
 
-class Authenticate extends Component
+class ModalPostEdit extends Component
 {
+     public $id;
+    
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($id)
     {
-        //
+        $this->id = $id;
     }
 
     /**
@@ -23,6 +26,8 @@ class Authenticate extends Component
      */
     public function render()
     {
-        return view('components.layouts.authenticate');
+        return view('components.modal.modal_post_edit', [
+            'post' => Post::where('post_id', $this->id)->first(),
+        ]);
     }
 }

@@ -13,10 +13,19 @@
 
      <!-- Scripts -->
      @vite(['resources/css/app.css', 'resources/js/app.js'])
+     <script>
+         if (localStorage.getItem('dark-mode') === 'false' || !('dark-mode' in localStorage)) {
+             document.querySelector('html').classList.remove('dark');
+             document.querySelector('html').style.colorScheme = 'light';
+         } else {
+             document.querySelector('html').classList.add('dark');
+             document.querySelector('html').style.colorScheme = 'dark';
+         }
+     </script>
  </head>
 
  <body class="font-inter antialiased bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400">
-     <main class="bg-white">
+     <main class="bg-white dark:bg-slate-900">
          <div class="relative flex">
              <div class="w-full md:w-1/2">
                  <div class="min-h-screen h-full flex flex-col after:flex-1">

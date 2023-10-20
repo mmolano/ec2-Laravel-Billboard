@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\modal;
+namespace App\View\Components\Modal;
 
 use Illuminate\View\Component;
 use App\Models\Comment;
@@ -8,15 +8,21 @@ use App\Models\Comment;
 class ModalDelete extends Component
 {
      public $id;
+     public $url;
+     public $title;
+     public $value;
     
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($id)
+    public function __construct($id, $url, $title, $value)
     {
         $this->id = $id;
+        $this->url = $url;
+        $this->title = $title;
+        $this->value = $value;
     }
 
     /**
@@ -26,8 +32,6 @@ class ModalDelete extends Component
      */
     public function render()
     {
-        return view('components.modal.modal_delete', [
-            'comment' => Comment::where('comment_id', $this->id)->first(),
-        ]);
+        return view('components.modal.modal_delete');
     }
 }

@@ -1,20 +1,23 @@
 <?php
 
-namespace App\View\Components\Layouts;
+namespace App\View\Components\Table;
 
 use Illuminate\View\Component;
 
-class Authenticate extends Component
+class Row extends Component
 {
+    public $post;
+    
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($post)
     {
-        //
+        $this->post = $post;
     }
+
 
     /**
      * Get the view / contents that represent the component.
@@ -23,6 +26,6 @@ class Authenticate extends Component
      */
     public function render()
     {
-        return view('components.layouts.authenticate');
+        return view('components.table.row');
     }
 }

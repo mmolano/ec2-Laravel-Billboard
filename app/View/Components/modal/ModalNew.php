@@ -1,23 +1,20 @@
 <?php
 
-namespace App\View\Components\card;
+namespace App\View\Components\Modal;
 
 use Illuminate\View\Component;
 
-class Post extends Component
+class ModalNew extends Component
 {
-    public $post;
-    
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($post)
+    public function __construct()
     {
-        $this->post = $post;
+        //
     }
-
 
     /**
      * Get the view / contents that represent the component.
@@ -26,6 +23,6 @@ class Post extends Component
      */
     public function render()
     {
-        return view('components.card.post');
+        return view('components.modal.modal_new');
     }
 }

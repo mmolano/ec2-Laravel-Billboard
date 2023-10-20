@@ -2,8 +2,11 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,
+    initial-scale=1, shrink-to-fit=no, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <title>Laravel</title>
 
@@ -34,7 +37,7 @@
     <x-layouts-header />
     <div class="flex h-screen overflow-hidden">
         <div class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden" x-ref="contentarea">
-            <livewire:card-search />
+            <livewire:body-table />
         </div>
         <livewire:scripts>
 </body>

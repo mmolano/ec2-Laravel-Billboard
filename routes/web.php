@@ -8,6 +8,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\SessionAuthMiddleware;
 use Illuminate\Support\Facades\Route;
+use App\Http\Livewire\BodyTable;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,7 +52,9 @@ Route::group([
         'prefix' => 'post'
     ], function () {
         Route::post('/', [PostController::class, 'store'])->name('post');
-        Route::get('/{id}', [PostController::class, 'show'])->name('posts.show');
+        Route::get('/{id}', [PostController::class, 'show'])->name('post.show');
+        Route::delete('/{id}/delete', [PostController::class, 'delete'])->name('post.delete');
+        Route::put('/{id}/edit', [PostController::class, 'update'])->name('post.update');
     });
 
     Route::group([

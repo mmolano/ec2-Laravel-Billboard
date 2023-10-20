@@ -18,18 +18,18 @@
                 </div>
             @endif
             <div>
-                <label for="email" class="text-sm font-bold text-gray-700 tracking-wide">メールアドレス</label>
+                <label for="email" class="text-sm font-bold text-gray-700 tracking-wide dark:text-gray-400">メールアドレス</label>
                 <input id="email" name="email"
-                    class="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500"
+                    class="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500 dark:bg-gray-900"
                     type="text" placeholder="yamada@example.com">
                 @if ($errors->has('email'))
                     <span class="text-sm text-red-600 font-bold">{{ $errors->first('email') }}</span>
                 @endif
             </div>
             <div class="mt-8">
-                <label for="password" class="text-sm font-bold text-gray-700 tracking-wide">パスワード</label>
+                <label for="password" class="text-sm font-bold text-gray-700 tracking-wide dark:text-gray-400">パスワード</label>
                 <input id="password" name="password"
-                    class="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500"
+                    class="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500 dark:bg-gray-900"
                     type="password" placeholder="******" autocomplete="on">
                 @if ($errors->has('password'))
                     <span class="text-sm text-red-600 font-bold">{{ $errors->first('password') }}</span>

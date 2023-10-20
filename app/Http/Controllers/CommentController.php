@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\User;
+use App\Models\Post;
 use Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use App\Jobs\SendEmail;
 
 class CommentController extends Controller
 {
@@ -29,9 +32,9 @@ class CommentController extends Controller
         }
 
         if ($type === 1) {
-            return Redirect::route('posts.show', ['id' => $id])->withErrors($message)->withInput();
+            return Redirect::route('post.show', ['id' => $id])->withErrors($message)->withInput();
         } else {
-            return Redirect::route('posts.show', ['id' => $id])->withErrors(['custom' => $message])->withInput();
+            return Redirect::route('post.show', ['id' => $id])->withErrors(['custom' => $message])->withInput();
         }
     }
 
@@ -60,7 +63,25 @@ class CommentController extends Controller
             return $this->handleErrorResponse(2, message: '作成できませんでした。', id: $request->post_id);
         }
 
-        return Redirect::route('posts.show', ['id' => $request->post_id])->with('success', 'コメントが作成されました！');
+        if (!$post = Post::where('post_id', $request->post_id)->first()) {
+            return $this->handleErrorResponse(2, message: 'コメントが作成されましたが、Errorがエラーが発生いたしました。', id: $request->post_id);
+        }
+
+        if($user->user_id !== $post->user_id) {
+            if (!$userPost = User::where('user_id', $post->user_id)->first()) {
+            return $this->handleErrorResponse(2, message: 'コメントが作成されましたが、Errorがエラーが発生いたしました。', id: $request->post_id);
+            } else if(!SendEmail::dispatch([
+                'email' => $userPost->email, 
+                'url' => env('APP_URL').'/post/'.$request->post_id,
+                'name' => $userPost->name, 
+                'subject' => '新しいコメントが届けました', 
+                'content' => $request->comment_content
+            ])) {
+                return $this->handleErrorResponse(2, message: 'Error: メールを送信できませんでした。', id: $request->post_id);
+            }
+        }
+
+        return Redirect::route('post.show', ['id' => $request->post_id])->with('success', 'コメントが作成されました！');
     }
 
     /**
@@ -70,12 +91,14 @@ class CommentController extends Controller
     public function delete(Request $request): RedirectResponse
     {
         if (!$comment = Comment::where('comment_id', $request->id)->first()) {
-            return $this->handleErrorResponse(2, message: 'コメントIDが見つかりませんでした。。', id: $request->post_id);
+            return $this->handleErrorResponse(2, message: 'コメントIDが見つかりませんでした。', id: $request->post_id);
+        } elseif(Auth::check() && Auth::user()->user_id !== $comment->user_id){
+            return $this->handleErrorResponse(2, message: '削除できませんでした。', id: $request->post_id);
         } else if (!$comment->delete()) {
             return $this->handleErrorResponse(2, message: '削除できませんでした。', id: $request->post_id);
         }
 
-        return Redirect::route('posts.show', ['id' => $request->post_id])->with('success', '削除できました！');
+        return Redirect::route('post.show', ['id' => $request->post_id])->with('success', '削除できました！');
     }
 
     /**
@@ -92,10 +115,12 @@ class CommentController extends Controller
             return $this->handleErrorResponse(1, message: $validation, logMessage: true, id: $request->post_id);
         } else if (!$comment = Comment::where('comment_id', $request->id)->first()) {
             return $this->handleErrorResponse(2, message: 'コメントIDが見つかりませんでした。。', id: $request->post_id);
+        } elseif(Auth::check() && Auth::user()->user_id !== $comment->user_id){
+            return $this->handleErrorResponse(2, message: '編集できませんでした。', id: $request->post_id);
         } else if (!$comment->update($request->only('comment_content'))) {
             return $this->handleErrorResponse(2, message: '編集できませんでした。', id: $request->post_id);
         }
 
-        return Redirect::route('posts.show', ['id' => $request->post_id])->with('success', '編集できました！');
+        return Redirect::route('post.show', ['id' => $request->post_id])->with('success', '編集できました！');
     }
 }
