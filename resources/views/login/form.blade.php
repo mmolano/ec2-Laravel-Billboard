@@ -1,6 +1,5 @@
 <x-layouts-authenticate>
-    <h1 class="text-3xl text-slate-800 dark:text-slate-100 font-bold mb-6">{{ __('ログイン') }} ✨</h1>
-    <!-- Form -->
+    <h1 class="text-3xl text-slate-800 dark:text-slate-100 font-bold mb-6">{{ __('ログイン') }}</h1>
     <form method="POST" action="{{ route('login.submit') }}">
         @csrf
         <div class="space-y-4">
@@ -18,18 +17,20 @@
                 </div>
             @endif
             <div>
-                <label for="email" class="text-sm font-bold text-gray-700 tracking-wide dark:text-gray-400">メールアドレス</label>
-                <input id="email" name="email"
-                    class="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500 dark:bg-gray-900"
-                    type="text" placeholder="yamada@example.com">
-                @if ($errors->has('email'))
-                    <span class="text-sm text-red-600 font-bold">{{ $errors->first('email') }}</span>
+                <label for="user_name"
+                    class="text-sm font-bold text-gray-700 tracking-wide dark:text-gray-400">ユーザー名</label>
+                <input id="user_name" name="user_name"
+                    class="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500 dark:text-white dark:bg-gray-900"
+                    type="text" placeholder="Kazuma">
+                @if ($errors->has('user_name'))
+                    <span class="text-sm text-red-600 font-bold">{{ $errors->first('user_name') }}</span>
                 @endif
             </div>
             <div class="mt-8">
-                <label for="password" class="text-sm font-bold text-gray-700 tracking-wide dark:text-gray-400">パスワード</label>
+                <label for="password"
+                    class="text-sm font-bold text-gray-700 tracking-wide dark:text-gray-400">パスワード</label>
                 <input id="password" name="password"
-                    class="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500 dark:bg-gray-900"
+                    class="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500 dark:text-white dark:bg-gray-900"
                     type="password" placeholder="******" autocomplete="on">
                 @if ($errors->has('password'))
                     <span class="text-sm text-red-600 font-bold">{{ $errors->first('password') }}</span>
@@ -45,10 +46,9 @@
             </button>
         </div>
     </form>
-    <!-- Footer -->
     <div class="pt-5 mt-6 border-slate-200">
         <div class="text-sm">
-            {{ __('メンバー登録をしていない方->') }} <a class="font-medium text-indigo-500 hover:text-indigo-600"
+            {{ __('メンバー登録をしていない方') }} <a class="font-medium text-indigo-500 hover:text-indigo-600"
                 href="{{ route('register') }}">{{ __('登録') }}</a>
         </div>
     </div>

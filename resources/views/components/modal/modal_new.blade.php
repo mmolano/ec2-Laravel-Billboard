@@ -1,9 +1,8 @@
-<!--- Modal component --->
 <div x-data="{ openModal: false }">
     <button @click="openModal = ! openModal"
         class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         type="button">
-        + ポスト
+        + メッセージ
     </button>
     <div x-cloak x-show="openModal" tabindex="-1" x-transition:enter="transition ease-out duration-200 transform"
         x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
@@ -11,12 +10,10 @@
         x-transition:leave-end="opacity-0"
         class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-full bg-[#50494952]">
         <div class="relative w-full max-w-2xl max-h-full m-auto mt-1">
-            <!-- Modal content -->
             <div @click.outside="openModal = false" class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                <!-- Modal header -->
                 <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
                     <h2 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">
-                        新しいポスト
+                        新しいメッセージ
                     </h2>
                     <button type="button" @click="openModal = false"
                         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -36,7 +33,7 @@
                         <label for="title" class="sr-only">タイトル</label>
                         <input id="title" name="title" type="text" minlength="6"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:border-gray-700 dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
-                            placeholder="タイトルを書く..."></input>
+                            placeholder="タイトルを書く..." required></input>
                         <div
                             class="mt-4 py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
                             <label for="content" class="sr-only">コンテンツ</label>
@@ -46,7 +43,7 @@
                         </div>
                         <button type="submit"
                             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                            ポスト作成
+                            メッセージ作成
                         </button>
                     </form>
                 </div>
@@ -54,4 +51,3 @@
         </div>
     </div>
 </div>
-<!--- end Modal --->

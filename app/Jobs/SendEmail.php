@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Jobs;
+
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -14,8 +15,8 @@ class SendEmail implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $details;
-    public $tries = 2;
-    public $timeout = 20;
+    public $tries = 3;
+    public $timeout = 120;
 
     /**
      * Create a new job instance.
@@ -34,6 +35,6 @@ class SendEmail implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->details['email'])->send(new EmailQueue(url: $this->details['url'], name: $this->details['name'], subject: $this->details['subject'], content: $this->details['content']));
+        Mail::to($this->details['email'])->send(new EmailQueue($this->details));
     }
 }

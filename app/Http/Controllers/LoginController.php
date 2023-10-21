@@ -29,18 +29,17 @@ class LoginController extends Controller
     {
         $validation = Validator::make($request->all(), [
             'password' => 'required|string|min:6',
-            'email' => 'required|email',
+            'user_name' => 'required|string',
         ]);
 
         if ($validation->fails()) {
             return Redirect::route('login')->withErrors($validation);
         }
 
-
-        if (Auth::attempt($request->only('email', 'password'))) {
-            return redirect()->route('dashboard');
+        if (!Auth::attempt($request->only('user_name', 'password'))) {
+            return Redirect::route('login')->withErrors(['login' => 'ログイン情報が間違っています。']);
         }
-
-        return Redirect::route('login')->withErrors(['login' => 'これらの資格情報は記録と一致しません。']);
+        
+        return Redirect::route('dashboard');
     }
 }

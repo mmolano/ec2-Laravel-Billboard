@@ -3,11 +3,7 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Model\User;
-use App\Model\Post;
-use App\Model\Comment;
 use Database\Factories\UserFactory;
 use Database\Factories\PostFactory;
 use Database\Factories\CommentFactory;
@@ -17,16 +13,16 @@ class CommmentTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function it_can_store_a_comment()
+    public function testCommentCreate()
     {
         $user = UserFactory::new()->create();
         $post = PostFactory::new()->create();
-    
+
 
         $response = $this->actingAs($user)
             ->post(route('comment'), [
                 'comment_content' => 'A test comment',
-                'post_id' => (string)$post->post_id,
+                'post_id' => (string) $post->post_id,
             ]);
 
         $response->assertRedirect(route('post.show', ['id' => $post->post_id]))
@@ -34,7 +30,7 @@ class CommmentTest extends TestCase
     }
 
     /** @test */
-    public function it_can_delete_a_comment()
+    public function testCommentDelete()
     {
         $user = UserFactory::new()->create();
         $post = PostFactory::new()->create();
@@ -42,18 +38,21 @@ class CommmentTest extends TestCase
 
         $this->actingAs($user);
 
+        $this->assertDatabaseHas('comments', ['comment_id' => $comment->comment_id]);
+
         $response = $this->actingAs($user)
             ->delete(route('comment.delete', [
-                'id' => $comment->comment_id, 
+                'id' => (int) $comment->comment_id,
                 'post_id' => $post->post_id
             ]));
 
+        $this->assertDatabaseMissing('comments', ['comment_id' => $comment->comment_id]);
         $response->assertRedirect(route('post.show', ['id' => $post->post_id]))
             ->assertSessionHas('success', '削除できました！');
     }
 
     /** @test */
-    public function it_can_update_a_comment()
+    public function testCommentUpdate()
     {
         $user = UserFactory::new()->create();
         $post = PostFactory::new()->create();
@@ -64,12 +63,12 @@ class CommmentTest extends TestCase
 
         $response = $this->actingAs($user)
             ->put(route('comment.update', ['id' => $comment->comment_id]), [
-            'comment_content' => $updatedContent,
-            'post_id' => $comment->post_id,
-        ]);
+                'comment_content' => $updatedContent,
+                'post_id' => $comment->post_id,
+            ]);
 
         $response->assertRedirect(route('post.show', ['id' => $post->post_id]))
-            ->assertSessionHas('success', '編集できました！');
+            ->assertSessionHas('success', '修正できました！');
 
         $this->assertDatabaseHas('comments', [
             'comment_id' => $comment->comment_id,

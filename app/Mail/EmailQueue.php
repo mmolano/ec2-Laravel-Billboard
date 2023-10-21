@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -14,21 +13,31 @@ class EmailQueue extends Mailable
     use Queueable, SerializesModels;
 
     public $url;
-    public $name;
+    public $nameOwner;
     public $subject;
+    public $postUser;
+    public $postDate;
     public $content;
-    
+
     /**
-     * Create a new message instance.
+     * Create a new EmailQueue instance.
      *
-     * @return void
+     * @param array $details An associative array with the following keys:
+     *     - 'url' (string): The URL for the email.
+     *     - 'nameOwner' (string): The name of the person who own the post/message.
+     *     - 'postUser' (string): The name of the user who posted.
+     *     - 'postDate' (string): The date of post.
+     *     - 'subject' (string): The email subject.
+     *     - 'content' (string): The email content.
      */
-    public function __construct($url, $name, $subject, $content)
+    public function __construct(array $details)
     {
-        $this->url = $url;
-        $this->name = $name;
-        $this->subject = $subject;
-        $this->content = $content;
+        $this->nameOwner = $details['nameOwner'];
+        $this->subject = $details['subject'];
+        $this->postUser = $details['postUser'];
+        $this->postDate = $details['postDate'];
+        $this->content = $details['content'];
+        $this->url = $details['url'];
     }
 
     /**
@@ -54,9 +63,12 @@ class EmailQueue extends Mailable
         return new Content(
             view: 'mails.email',
             with: [
-                'url' => $this->url,
-                'name' => $this->name,
+                'nameOwner' => $this->nameOwner,
+                'subject' => $this->subject,
+                'postUser' => $this->postUser,
+                'postDate' => $this->postDate,
                 'content' => $this->content,
+                'url' => $this->url,
             ],
         );
     }

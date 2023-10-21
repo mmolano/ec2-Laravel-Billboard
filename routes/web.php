@@ -8,7 +8,6 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\SessionAuthMiddleware;
 use Illuminate\Support\Facades\Route;
-use App\Http\Livewire\BodyTable;
 
 /*
 |--------------------------------------------------------------------------

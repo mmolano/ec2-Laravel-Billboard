@@ -4,12 +4,10 @@
     x-transition:leave-end="opacity-0"
     class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-full bg-[#50494952]">
     <div class="relative top-1/4 w-full max-w-2xl max-h-full m-auto mt-1">
-        <!-- Modal content -->
         <div @click.outside="openModal = false" class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <!-- Modal header -->
             <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
                 <h2 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">
-                    ポストを変更する
+                    メッセージを変更する
                 </h2>
                 <button type="button" @click="openModal = false"
                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -43,7 +41,7 @@
                     </div>
                     <button type="submit"
                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                        ポスト作成
+                        メッセージ作成
                     </button>
                 </form>
             </div>

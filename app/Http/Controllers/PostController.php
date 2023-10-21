@@ -56,25 +56,27 @@ class PostController extends Controller
             return $this->handleErrorResponse(2, message: 'Error: 管理者に連絡してください。');
         } else if ($validation->fails()) {
             return $this->handleErrorResponse(1, message: $validation, logMessage: true);
-        } else if (!$post = Post::create([
+        } else if (
+            !$post = Post::create([
                 'title' => $request->title,
                 'content' => $request->content,
                 'user_id' => $user->user_id
-        ])) {
-            return $this->handleErrorResponse(2, message: '新しいポストを作成できませんでした。');
+            ])
+        ) {
+            return $this->handleErrorResponse(2, message: '新しいメッセージを作成できませんでした。');
         }
 
-        if(!SendEmail::dispatch([
-            'email' => $user->email, 
-            'url' => env('APP_URL').'/dashboard',
-            'name' => $user->name, 
-            'subject' => '新しいメッセージが作成されました。', 
+        SendEmail::dispatch([
+            'email' => $user->email,
+            'url' => env('APP_URL') . '/dashboard',
+            'nameOwner' => $user->name,
+            'postUser' => $user->name,
+            'postDate' => $post->created_at,
+            'subject' => '新しいメッセージが作成されました。',
             'content' => $request->content
-        ])) {
-            return $this->handleErrorResponse(2, message: 'Error: メールを送信できませんでした。');
-        }
+        ]);
 
-        return Redirect::route('dashboard')->with('success', 'ポストが作成されました！');
+        return Redirect::route('dashboard')->with('success', 'メッセージが作成されました！');
     }
 
     /**
@@ -83,29 +85,33 @@ class PostController extends Controller
      */
     public function show(Request $request): RedirectResponse|Factory|View|Application
     {
-        if (!$post = Post::with(['comments' => function ($query) {
-            $query->orderBy('created_at', 'desc');
-        }])->find($request->id)) {
-            return $this->handleErrorResponse(2, message: 'ポストIDが見つかりませんでした。');
+        if (
+            !$post = Post::with([
+                'comments' => function ($query) {
+                    $query->orderBy('created_at', 'desc');
+                }
+            ])->find($request->id)
+        ) {
+            return $this->handleErrorResponse(2, message: 'メッセージIDが見つかりませんでした。');
         }
 
         return view('post.show', compact('post'));
     }
 
-     /**
+    /**
      * @param Request $request
      * @return RedirectResponse
      */
     public function delete(Request $request): RedirectResponse
     {
         if (!$post = Post::where('post_id', $request->id)->first()) {
-            return $this->handleErrorResponse(2, message: 'ポストIDが見つかりませんでした。。', id: $request->post_id);
-        } elseif(Auth::check() && Auth::user()->user_id !== $post->user_id){
-            return $this->handleErrorResponse(2, message: '削除できませんでした。', id: $request->post_id);
-        } elseif (!Comment::where('post_id', $request->id)->delete()) {
-            return $this->handleErrorResponse(2, message: 'ポストのコメントを削除できませんでした。', id: $request->post_id);
+            return $this->handleErrorResponse(2, message: 'メッセージIDが見つかりませんでした。。');
+        } elseif (Auth::check() && Auth::user()->user_id != $post->user_id) {
+            return $this->handleErrorResponse(2, message: '削除できませんでした。');
+        } elseif (Comment::where('post_id', $request->id)->first() && !Comment::where('post_id', $request->id)->delete()) {
+            return $this->handleErrorResponse(2, message: 'メッセージのコメントを削除できませんでした。');
         } else if (!$post->delete()) {
-            return $this->handleErrorResponse(2, message: '削除できませんでした。', id: $request->post_id);
+            return $this->handleErrorResponse(2, message: '削除できませんでした。');
         }
 
         return Redirect::route('dashboard')->with('success', '削除できました！');
@@ -123,15 +129,15 @@ class PostController extends Controller
         ]);
 
         if ($validation->fails()) {
-            return $this->handleErrorResponse(1, message: $validation, logMessage: true, id: $request->post_id);
+            return $this->handleErrorResponse(1, message: $validation, logMessage: true);
         } else if (!$post = Post::where('post_id', $request->id)->first()) {
-            return $this->handleErrorResponse(2, message: 'ポストIDが見つかりませんでした。', id: $request->post_id);
-        } elseif(Auth::check() && Auth::user()->user_id !== $post->user_id){
-            return $this->handleErrorResponse(2, message: '編集できませんでした。', id: $request->post_id);
+            return $this->handleErrorResponse(2, message: 'メッセージIDが見つかりませんでした。');
+        } elseif (Auth::check() && Auth::user()->user_id != $post->user_id) {
+            return $this->handleErrorResponse(2, message: '修正できませんでした。');
         } else if (!$post->update($request->only('title', 'content'))) {
-            return $this->handleErrorResponse(2, message: '編集できませんでした。', id: $request->post_id);
+            return $this->handleErrorResponse(2, message: '修正できませんでした。');
         }
 
-        return Redirect::route('dashboard')->with('success', '編集できました！');
+        return Redirect::route('dashboard')->with('success', '修正できました！');
     }
 }

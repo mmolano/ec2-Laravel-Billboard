@@ -53,7 +53,7 @@
                             x-transition:leave-end="opacity-0" style="display: none;">
                             <div class="pt-0.5 pb-2 px-3 mb-1 border-b border-slate-200 dark:border-slate-700">
                                 <div class="font-medium text-slate-800 dark:text-slate-100">
-                                    {{ ucfirst(Auth::user()->name) }}
+                                    {{ ucfirst(Auth::user()->user_name) }}
                                 </div>
                                 <div class="text-xs text-slate-500 dark:text-slate-400 italic">ユーザー</div>
                             </div>

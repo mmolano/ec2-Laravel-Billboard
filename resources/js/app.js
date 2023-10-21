@@ -33,6 +33,4 @@ document.addEventListener('DOMContentLoaded', () => {
          setDarkMode(checked);
       });
    });
-
-
 });

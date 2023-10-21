@@ -53,7 +53,7 @@ class RegisterController extends Controller
     public function register(Request $request): RedirectResponse
     {
         $validation = Validator::make($request->all(), [
-            'user_name' => 'required|string|max:255',
+            'user_name' => 'required|string|max:255|unique:users,user_name',
             'password' => 'required|string|min:6',
             'email' => 'required|email|unique:users,email',
             'name' => 'required|string|max:255',
@@ -69,6 +69,7 @@ class RegisterController extends Controller
         ])) {
             return $this->handleErrorResponse(2, '登録できませんでした。');
         } else if (!Auth::login($user)) {
+            dd(Auth::login($user), $user);
             return $this->handleErrorResponse(2, 'ログインできませんでした。');
         }
 

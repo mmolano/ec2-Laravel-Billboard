@@ -54,7 +54,7 @@ class CommentController extends Controller
         } else if ($validation->fails()) {
             return $this->handleErrorResponse(1, message: $validation, logMessage: true, id: $request->post_id);
         } else if (
-            !Comment::create([
+            !$comment = Comment::create([
                 'comment_content' => $request->comment_content,
                 'post_id' => $request->post_id,
                 'user_id' => $user->user_id
@@ -64,21 +64,23 @@ class CommentController extends Controller
         }
 
         if (!$post = Post::where('post_id', $request->post_id)->first()) {
-            return $this->handleErrorResponse(2, message: 'コメントが作成されましたが、Errorがエラーが発生いたしました。', id: $request->post_id);
+            return $this->handleErrorResponse(2, message: 'コメントが作成されましたが、エラーが発生いたしました。', id: $request->post_id);
         }
 
-        if($user->user_id !== $post->user_id) {
-            if (!$userPost = User::where('user_id', $post->user_id)->first()) {
-            return $this->handleErrorResponse(2, message: 'コメントが作成されましたが、Errorがエラーが発生いたしました。', id: $request->post_id);
-            } else if(!SendEmail::dispatch([
-                'email' => $userPost->email, 
+        if($user->user_id != $post->user_id) {
+            if (!$userOwner = User::where(['user_id' => $post->user_id])->first()) {
+            return $this->handleErrorResponse(2, message: 'コメントが作成されましたが、エラーが発生いたしました。', id: $request->post_id);
+            } 
+            
+            SendEmail::dispatch([
+                'email' => $userOwner->email, 
                 'url' => env('APP_URL').'/post/'.$request->post_id,
-                'name' => $userPost->name, 
+                'nameOwner' => $userOwner->name, 
+                'postUser' => $user->name,
+                'postDate' => $comment->created_at,
                 'subject' => '新しいコメントが届けました', 
                 'content' => $request->comment_content
-            ])) {
-                return $this->handleErrorResponse(2, message: 'Error: メールを送信できませんでした。', id: $request->post_id);
-            }
+            ]);
         }
 
         return Redirect::route('post.show', ['id' => $request->post_id])->with('success', 'コメントが作成されました！');
@@ -92,7 +94,7 @@ class CommentController extends Controller
     {
         if (!$comment = Comment::where('comment_id', $request->id)->first()) {
             return $this->handleErrorResponse(2, message: 'コメントIDが見つかりませんでした。', id: $request->post_id);
-        } elseif(Auth::check() && Auth::user()->user_id !== $comment->user_id){
+        } elseif(Auth::check() && Auth::user()->user_id != $comment->user_id){
             return $this->handleErrorResponse(2, message: '削除できませんでした。', id: $request->post_id);
         } else if (!$comment->delete()) {
             return $this->handleErrorResponse(2, message: '削除できませんでした。', id: $request->post_id);
@@ -115,12 +117,12 @@ class CommentController extends Controller
             return $this->handleErrorResponse(1, message: $validation, logMessage: true, id: $request->post_id);
         } else if (!$comment = Comment::where('comment_id', $request->id)->first()) {
             return $this->handleErrorResponse(2, message: 'コメントIDが見つかりませんでした。。', id: $request->post_id);
-        } elseif(Auth::check() && Auth::user()->user_id !== $comment->user_id){
-            return $this->handleErrorResponse(2, message: '編集できませんでした。', id: $request->post_id);
+        } elseif(Auth::check() && Auth::user()->user_id != $comment->user_id){
+            return $this->handleErrorResponse(2, message: '修正できませんでした。', id: $request->post_id);
         } else if (!$comment->update($request->only('comment_content'))) {
-            return $this->handleErrorResponse(2, message: '編集できませんでした。', id: $request->post_id);
+            return $this->handleErrorResponse(2, message: '修正できませんでした。', id: $request->post_id);
         }
 
-        return Redirect::route('post.show', ['id' => $request->post_id])->with('success', '編集できました！');
+        return Redirect::route('post.show', ['id' => $request->post_id])->with('success', '修正できました！');
     }
 }

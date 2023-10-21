@@ -49,16 +49,17 @@ $ php artisan migrate
 # データを追加でき、作成されたすべてのユーザーのパスワードは "Test123"です
 $ php artisan db:seed
 
-# CommentControllerの単純なテストがあり、次のようにテストができます
+# 次のようにテストができます
 $ php artisan test
 
 # npmをインストールします
 $ npm i
 
-# BuildBuildフォルダに生成します
+# Buildフォルダに生成します
 $ npm run build
 
-# Laravel RedisまたはAmazon SESを使用していないため、メールシステムを利用する場合はQueue workerを起動する必要があります。
+# メールが届かない場合はLogs (storage/logs/worker.log)を確認してください。
+# サーバーにはSupervisorがあり、キュー システムは動作するはずですが、エラーがある場合は次のコマンドからもできます
 $ php artisan queue:work
 
 ```
@@ -66,7 +67,7 @@ $ php artisan queue:work
 
 ```bash
 
-# メールにはQueueシステムを使用しているため、メーラー（mailtrap）を設定する必要があります。
+# メールにはQueueシステムを使用しているため、メーラー（Mailtrap、Gmailなど）を設定する必要があります。
 $ MAIL_MAILER=
 $ MAIL_HOST=
 $ MAIL_PORT=
