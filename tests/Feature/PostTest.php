@@ -35,7 +35,7 @@ class PostTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user);
-        
+
         $post = Post::factory()->create(['user_id' => $user->user_id]);
 
         $response = $this->get(route('post.show', ['id' => $post->post_id]));
@@ -56,7 +56,7 @@ class PostTest extends TestCase
         $response->assertRedirect(route('dashboard'));
         $this->assertDatabaseMissing('posts', ['post_id' => $post->post_id]);
     }
-    
+
     /** @test */
     public function testUpdatePost()
     {

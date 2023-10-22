@@ -48,7 +48,7 @@ class EmailQueue extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Fwd: ' . $this->subject,
+            subject: $this->subject,
         );
     }
 

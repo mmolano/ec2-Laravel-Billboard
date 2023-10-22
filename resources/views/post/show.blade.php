@@ -1,6 +1,22 @@
 <x-layouts-post>
     <section>
         <article class="max-w-2xl px-6 py-24 mx-auto space-y-12 dark:bg-gray-800 dark:text-gray-50">
+            @if (session('update') || $errors->hasAny('customUpdate'))
+                @php
+                    $bgColor = session('update') ? 'green' : 'red';
+                    $textColor = session('update') ? 'green' : 'red';
+                    $message = session('update') ?: $errors->first('customUpdate');
+                @endphp
+                <div class="bg-{{ $bgColor }}-100 text-{{ $textColor }}-600 px-3 py-2 rounded mb-2">
+                    <span class="text-sm font-bold">{{ $message }}</span>
+                </div>
+            @elseif ($errors->validationFail->any())
+                <div class="bg-red-100 text-red-600 px-3 py-2 rounded mb-2">
+                    @foreach ($errors->validationFail->all() as $error)
+                        <span class="text-sm font-bold">{{ $error }}</span><br>
+                    @endforeach
+                </div>
+            @endif
             <div class="flex justify-between">
                 <a href="/dashboard"
                     class="w-fit flex items-center px-5 py-2 text-sm text-gray-700 gap-x-2  dark:text-gray-200">
@@ -80,14 +96,13 @@
                 <div class="bg-{{ $bgColor }}-100 text-{{ $textColor }}-600 px-3 py-2 rounded mb-2">
                     <span class="text-sm font-bold">{{ $message }}</span>
                 </div>
-            @elseif ($errors->any())
+            @elseif ($errors->any() && !$errors->hasAny('customUpdate') && !$errors->validationFail->any())
                 <div class="bg-red-100 text-red-600 px-3 py-2 rounded mb-2">
                     @foreach ($errors->all() as $error)
                         <span class="text-sm font-bold">{{ $error }}</span><br>
                     @endforeach
                 </div>
             @endif
-
             <form class="mb-6" method="POST" action="{{ route('comment') }}">
                 @csrf
                 <div

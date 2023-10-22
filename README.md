@@ -62,6 +62,10 @@ $ npm run build
 # サーバーにはSupervisorがあり、キュー システムは動作するはずですが、エラーがある場合は次のコマンドからもできます
 $ php artisan queue:work
 
+# Permission denied (log storage)の場合は
+$ sudo chmod -R 775 /var/www/html/laravel/storage/*
+$ sudo chmod -R 775 /var/www/html/laravel/bootstrap/*
+
 ```
 ## Env
 

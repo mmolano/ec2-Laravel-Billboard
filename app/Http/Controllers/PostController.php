@@ -8,6 +8,7 @@ use Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -22,9 +23,10 @@ class PostController extends Controller
      * @param int $type
      * @param $message
      * @param bool $logMessage
+     * @param string $id
      * @return RedirectResponse
      */
-    private function handleErrorResponse(int $type, $message, bool $logMessage = false): RedirectResponse
+    private function handleErrorResponse(int $type, mixed $message, bool $logMessage = false, string $id): RedirectResponse
     {
         if ($logMessage) {
             Log::error('An error occurred', [
@@ -34,9 +36,21 @@ class PostController extends Controller
             ]);
         }
 
+        $previousUrl = URL::previous();
+        $previousRouteName = app('router')->getRoutes()->match(app('request')->create($previousUrl))->getName();
+
         if ($type === 1) {
+            if ($previousRouteName === 'post.show') {
+                return Redirect::route('post.show', ['id' => $id])->withErrors($message, 'validationFail');
+            }
+
             return Redirect::route('dashboard')->withErrors($message)->withInput();
         } else {
+
+            if ($previousRouteName === 'post.show') {
+                return Redirect::route('post.show', ['id' => $id])->withErrors(['customUpdate' => $message])->withInput();
+            }
+
             return Redirect::route('dashboard')->withErrors(['custom' => $message])->withInput();
         }
     }
@@ -129,13 +143,20 @@ class PostController extends Controller
         ]);
 
         if ($validation->fails()) {
-            return $this->handleErrorResponse(1, message: $validation, logMessage: true);
+            return $this->handleErrorResponse(1, message: $validation, logMessage: true, id: $request->id);
         } else if (!$post = Post::where('post_id', $request->id)->first()) {
-            return $this->handleErrorResponse(2, message: 'メッセージIDが見つかりませんでした。');
+            return $this->handleErrorResponse(2, message: 'メッセージIDが見つかりませんでした。', id: $request->id);
         } elseif (Auth::check() && Auth::user()->user_id != $post->user_id) {
-            return $this->handleErrorResponse(2, message: '修正できませんでした。');
+            return $this->handleErrorResponse(2, message: '修正できませんでした。', id: $request->id);
         } else if (!$post->update($request->only('title', 'content'))) {
-            return $this->handleErrorResponse(2, message: '修正できませんでした。');
+            return $this->handleErrorResponse(2, message: '修正できませんでした。', id: $request->id);
+        }
+
+        $previousUrl = URL::previous();
+        $previousRouteName = app('router')->getRoutes()->match(app('request')->create($previousUrl))->getName();
+
+        if ($previousRouteName === 'post.show') {
+            return Redirect::route('post.show', ['id' => $request->id])->with('update', '修正できました！');
         }
 
         return Redirect::route('dashboard')->with('success', '修正できました！');
