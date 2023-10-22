@@ -69,7 +69,6 @@ class RegisterController extends Controller
         ])) {
             return $this->handleErrorResponse(2, '登録できませんでした。');
         } else if (!Auth::login($user)) {
-            dd(Auth::login($user), $user);
             return $this->handleErrorResponse(2, 'ログインできませんでした。');
         }
 
