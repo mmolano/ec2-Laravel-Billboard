@@ -46,7 +46,7 @@ $ php artisan key:generate
 # データベースを作成します
 $ php artisan migrate
 
-# データを追加でき、作成されたすべてのユーザーのパスワードは "Test123"です
+# 初期データを追加でき、作成されたすべてのユーザーのパスワードは "Test123"です
 $ php artisan db:seed
 
 # 次のようにテストができます

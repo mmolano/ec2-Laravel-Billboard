@@ -27,21 +27,4 @@
             {{ $post->comments->count() }}
         </div>
     </td>
-    <td class="p-2 whitespace-nowrap">
-        @if (Auth::user()->user_id === $post->user_id)
-            <div class="flex text-left font-medium text-green-500 justify-center">
-                <div x-data="{ openModal: false, openModalDelete: false }">
-                    <button type="button" @click="openModal = !openModal"
-                        class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                        修正
-                    </button>
-                    <button @click="openModalDelete = !openModalDelete" type="button"
-                        class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
-                        削除</button>
-                    <x-modal-post-edit :id="$post->post_id" />
-                    <x-modal-delete :id="$post->post_id" :value="$post" url="post.delete" title="メッセージを削除しますか？" />
-                </div>
-            </div>
-        @endif
-    </td>
 </tr>

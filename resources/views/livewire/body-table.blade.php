@@ -46,9 +46,6 @@
                                         <th class="p-2 whitespace-nowrap">
                                             <div class="font-semibold text-left">コメント</div>
                                         </th>
-                                        <th class="p-2 whitespace-nowrap">
-                                            <div class="font-semibold text-center">アクション</div>
-                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody class="text-sm divide-y divide-slate-100 dark:divide-slate-700">
